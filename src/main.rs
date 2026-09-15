@@ -4,8 +4,11 @@ use hyper::{Request, Response, StatusCode, Version, body, server::conn::http2, s
 use hyper_util::rt::{TokioExecutor, TokioIo};
 use tokio::net::TcpListener;
 
-async fn handle(req: Request<body::Incoming>) -> Result<Response<()>, hyper::Error>{
-    Ok(Response::builder().status(StatusCode::OK).version(Version::HTTP_2).body())
+async fn handle(req: Request<body::Incoming>) -> Result<Response<&str>, hyper::Error>{
+    let req =req.into_body();
+    println!("the sent request is {req:?}");
+    let http_response= Response::new("hello there");
+    Ok(http_response)
 }
 #[tokio::main]
 async fn main() {
