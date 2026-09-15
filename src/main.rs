@@ -1,11 +1,11 @@
 use std::net::{SocketAddr};
 
-use hyper::{Request, Response, body, server::conn::http2, service::service_fn};
+use hyper::{Request, Response, StatusCode, Version, body, server::conn::http2, service::service_fn};
 use hyper_util::rt::{TokioExecutor, TokioIo};
 use tokio::net::TcpListener;
 
-async fn handle(req: Request<body::Incoming>) -> Result<Response<String>, hyper::Error>{
-    Ok(Response::new("hello there".to_string()))
+async fn handle(req: Request<body::Incoming>) -> Result<Response<()>, hyper::Error>{
+    Ok(Response::builder().status(StatusCode::OK).version(Version::HTTP_2).body())
 }
 #[tokio::main]
 async fn main() {
