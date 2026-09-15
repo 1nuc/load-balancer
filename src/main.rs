@@ -4,7 +4,7 @@ use hyper::{Request, Response, StatusCode, Version, body, server::conn::http2, s
 use hyper_util::rt::{TokioExecutor, TokioIo};
 use tokio::net::TcpListener;
 
-async fn handle(req: Request<body::Incoming>) -> Result<Response<&str>, hyper::Error>{
+async fn handle<'a>(req: Request<body::Incoming>) -> Result<Response<&'a str>, hyper::Error>{
     let req =req.into_body();
     println!("the sent request is {req:?}");
     let http_response= Response::new("hello there");
