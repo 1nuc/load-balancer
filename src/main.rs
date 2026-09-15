@@ -1,13 +1,14 @@
 use std::net::{SocketAddr};
 
+use http_body_util::Full;
 use hyper::{Request, Response, StatusCode, Version, body, server::conn::http2, service::service_fn};
 use hyper_util::rt::{TokioExecutor, TokioIo};
 use tokio::net::TcpListener;
 
-async fn handle(req: Request<body::Incoming>) -> Result<Response<String>, hyper::Error>{
+async fn handle(req: Request<body::Incoming>) -> Result<Response<http_body_util::Full<String>>, hyper::Error>{
     let req =req.into_body();
     println!("the sent request is {req:?}");
-    let http_response= Response::new("hello there".to_string());
+    let http_response= Response::new(Full::new("hi there".to_string()));
     Ok(http_response)
 }
 #[tokio::main]

@@ -282,6 +282,7 @@ name = "load_balancer"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "http-body-util",
  "hyper",
  "hyper-util",
  "tokio",
