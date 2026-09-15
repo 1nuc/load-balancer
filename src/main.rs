@@ -1,11 +1,11 @@
-use std::{io::Bytes, net::SocketAddr};
+use std::{net::SocketAddr};
 
 use http_body_util::Full;
-use hyper::{Request, Response, body, server::conn::http2, service::service_fn};
+use hyper::{Request, Response, body, server::conn::http2, service::service_fn, body::Bytes};
 use hyper_util::rt::{TokioExecutor, TokioIo};
 use tokio::net::TcpListener;
 
-async fn handle(req: Request<body::Incoming>) -> Result<Response<http_body_util::Full<Bytes<String>>>, hyper::Error>{
+async fn handle(req: Request<body::Incoming>) -> Result<Response<http_body_util::Full<Bytes>>, hyper::Error>{
     let req =req.into_body();
     println!("the sent request is {req:?}");
     let http_response= Response::new(Full::new(Bytes::from("hi there".to_string())));
