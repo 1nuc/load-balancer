@@ -1,7 +1,7 @@
 use std::{net::SocketAddr};
 
 use http_body_util::Full;
-use hyper::{Request, Response, body, server::conn::http2, service::service_fn, body::Bytes};
+use hyper::{Request, Response, body, service::service_fn, body::Bytes};
 use hyper_util::{rt::{TokioExecutor, TokioIo}, server::conn::auto};
 use tokio::{net::TcpListener};
 
