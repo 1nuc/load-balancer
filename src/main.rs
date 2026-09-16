@@ -2,7 +2,7 @@ use std::{net::SocketAddr};
 
 use http_body_util::Full;
 use hyper::{Request, Response, body, server::conn::http2, service::service_fn, body::Bytes};
-use hyper_util::rt::{TokioExecutor, TokioIo};
+use hyper_util::{rt::{TokioExecutor, TokioIo}, server::conn::auto};
 use tokio::{net::TcpListener};
 
 async fn handle(req: Request<body::Incoming>) -> Result<Response<http_body_util::Full<Bytes>>, hyper::Error>{
@@ -20,24 +20,9 @@ async fn main() {
     loop {
         if let Ok((stream, _))=server.accept().await{
             println!("Connection received");
-            let http2= http2::Builder::new(TokioExecutor::new());
+            let http2= auto::Builder::new(TokioExecutor::new());
             let io=TokioIo::new(stream);
             http2.serve_connection(io, service_fn(handle));
         }
     }
-    // loop {
-    //     match server.accept().await{
-    //         Ok((stream, _ip))=>{
-    //             let http2=http2::Builder::new(TokioExecutor::new());
-    //             println!("hello");
-    //             let io=TokioIo::new(stream);
-    //             println!("hello");
-    //             sleep(Duration::from_secs(4));
-    //             http2.serve_connection(io, service_fn(handle));
-    //         },
-    //         Err(err) => {
-    //             eprint!("{err:?}");
-    //         },
-    //     }
-    // }
 }
