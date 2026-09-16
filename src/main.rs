@@ -1,9 +1,9 @@
-use std::{net::SocketAddr, time::Duration};
+use std::{net::SocketAddr};
 
 use http_body_util::Full;
 use hyper::{Request, Response, body, server::conn::http2, service::service_fn, body::Bytes};
 use hyper_util::rt::{TokioExecutor, TokioIo};
-use tokio::{net::TcpListener, time::sleep};
+use tokio::{net::TcpListener};
 
 async fn handle(req: Request<body::Incoming>) -> Result<Response<http_body_util::Full<Bytes>>, hyper::Error>{
     let _req =req.into_body();
@@ -19,6 +19,7 @@ async fn main() {
     let server=TcpListener::bind(ip).await.expect("unable to bind the ip");
     loop {
         if let Ok((stream, _))=server.accept().await{
+            println!("Connection received");
             let http2= http2::Builder::new(TokioExecutor::new());
             let io=TokioIo::new(stream);
             http2.serve_connection(io, service_fn(handle));
