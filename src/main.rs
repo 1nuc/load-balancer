@@ -6,13 +6,12 @@ use hyper_util::{rt::{TokioExecutor, TokioIo}, server::conn::auto};
 use tokio::{net::TcpListener};
 
 async fn handle(req: Request<body::Incoming>) -> Result<Response<http_body_util::Full<Bytes>>, hyper::Error>{
-    let _req =req.into_body();
     let msg=match req.uri().host(){
         Some("/")=> "THIS IS THE OFFICIAL PROXY PROVIDED",
         None => "Nothing is returned",
         Some(_) => "",
     };
-    let http_response= Response::new(Full::new(Bytes::from("hi there".to_string())));
+    let http_response= Response::new(Full::new(Bytes::from(msg.to_string())));
     Ok(http_response)
 }
 
