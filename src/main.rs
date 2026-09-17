@@ -1,15 +1,15 @@
 use std::{net::SocketAddr};
 
 use http_body_util::Full;
-use hyper::{Request, Response, Uri, body::{self, Bytes}, service::service_fn};
+use hyper::{Request, Response, body::{self, Bytes}, service::service_fn};
 use hyper_util::{rt::{TokioExecutor, TokioIo}, server::conn::auto};
 use tokio::{net::TcpListener};
 
 async fn handle(req: Request<body::Incoming>) -> Result<Response<http_body_util::Full<Bytes>>, hyper::Error>{
-    let msg=match req.uri().host(){
-        Some("/")=> "THIS IS THE OFFICIAL PROXY PROVIDED",
-        None => "Nothing is returned",
-        Some(_) => "",
+    let msg=match req.uri().to_string().as_str(){
+        "/test"=> "THIS IS THE OFFICIAL PROXY PROVIDED",
+        "/none"=> "THIS IS THE SECOND OFFICCIAL PROXY",
+        _=> "Nothing is returned",
     };
     let http_response= Response::new(Full::new(Bytes::from(msg.to_string())));
     Ok(http_response)
